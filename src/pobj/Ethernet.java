@@ -1,14 +1,15 @@
 package pobj;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Ethernet {
 	private String dest, src;
 	private String type;
 	private IP ip;
-	public Ethernet(String[] trame) {
-		dest= TrameUtils.listToString(TrameUtils.split(trame, 0, 6));
-		src= TrameUtils.listToString(TrameUtils.split(trame, 6, 12));
-		type= TrameUtils.listToString(TrameUtils.split(trame, 12, 14));
-		ip= new IP(TrameUtils.split(trame, 14));
+	public Ethernet(Trame trame) {
+		dest= trame.get(0, 6, ":");
+		src= trame.get(6, 12, ":");
+		type= trame.get(12, 14);
+		ip= new IP(trame.subTrame(14));
 	}
 }

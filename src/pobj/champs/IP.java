@@ -8,7 +8,7 @@ import pobj.Donnees;
 
 public class IP {
 	public int version, IHL, tos, totalLength;
-	int identifier;
+	String identifier;
 	int[] flags;
 	int offset;
 	int ttl, protocol;
@@ -24,7 +24,7 @@ public class IP {
 		tos= trame.parseInt(1);
 		totalLength= trame.parseInt(2,4);
 		// A partir de l'octet n°4
-		identifier= trame.parseInt(4,6);
+		identifier= trame.get(4,6);
 		flags= calculeFlags(trame);
 		offset= calculeOffset(trame);
 		// A partir de l'octet n°8
@@ -37,6 +37,23 @@ public class IP {
 		dest= calculeDest(trame);
 		// A partir de l'octet n°20
 		listOption = calculeOption(trame);
+	}
+	
+	// Retourne en String, l'entete IP
+	@Override
+	public String toString() {
+		StringJoiner sb = new StringJoiner("\n  ", "Protocol IP\n  ","\n");
+		sb.add("Version: "+ version);
+		sb.add("Header length: "+ IHL);
+		sb.add("Type of service: "+ tos);
+		sb.add("Total Length: "+ totalLength);
+		sb.add("Identifier "+ identifier);
+		sb.add("Flags: "+ flags.toString());
+		sb.add("Fragment offset: "+ offset);
+		sb.add("Protocol: "+ protocol);
+		sb.add("Header Checksum: "+ checksum);
+		return sb.toString();
+		
 	}
 	
 	String calculeSrc(Donnees trame) {;
@@ -74,12 +91,14 @@ public class IP {
 	
 	// Calcule la valeur de offset selon le flags
 	private int calculeOffset(Donnees trame) {
-		int i = trame.parseInt(6,8);
-		return (i - 64*flags[1] - 32*flags[2]);
+		String s = trame.get(6,8);
+		int val = trame.parseInt(6);
+		val-= 64*flags[1] + 32*flags[2];
+		return val+trame.parseInt(7);
 	}
 	
 	// Calcule le protocol
-	private int calculeProtocol(Donnees trame) {
+	private int calculeProtocol(Donnees trame) {		
 		int i = trame.parseInt(9);
 		if (i!=17) throw new IllegalArgumentException("IP: mauvais protocol");
 		return i;
@@ -90,12 +109,5 @@ public class IP {
 		List<String> res = new ArrayList<>();
 		
 		return res;
-	}
-	
-	// Classe qui représente un tuple
-	public class Pair{
-		public String x;
-		public Integer y;
-		public Pair(String a, Integer b) { x=a; y=b; }
 	}
 }

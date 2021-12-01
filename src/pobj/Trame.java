@@ -22,19 +22,20 @@ public class Trame{
 			eth= calculeEthernet();
 			ip = calculeIP();
 			udp = calculeUDP();
-			couche7 = calculeCouche7();
+			//couche7 = calculeCouche7();
 		}
 		catch( Exception e) {
-			System.out.println("Fichier invalide");
+			e.printStackTrace();
 		}
 	}
 	
+	@Override
 	public String toString() {
-		StringJoiner sb = new StringJoiner("\n");
+		StringJoiner sb = new StringJoiner("\n=================================\n");
 		sb.add(eth.toString());
 		sb.add(ip.toString());
 		sb.add(udp.toString());
-		sb.add(couche7.toString());
+		//sb.add(couche7.toString());
 		return sb.toString();	
 	}
 	
@@ -57,13 +58,11 @@ public class Trame{
 	private Couche7 calculeCouche7() {
 		donnees= donnees.subDonnees(8);
 		// On regarde les numéros de port Source et Destination
-		int portSrc= udp.getPortSrc();
-		int portDest= udp.getPortDest();
 		// On verifie si on utilise DNS ou DHCP
-		if (portSrc==53 || portDest ==53)
+		if (udp.portSrc==53 || udp.portDest ==53)
 			return new DNS(donnees);
 		else {
-			if (portSrc==67 || portDest ==67)
+			if (udp.portSrc==67 || udp.portDest ==67)
 				return new DHCP(donnees);
 			else throw new IllegalArgumentException();
 		}

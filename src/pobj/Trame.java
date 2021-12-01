@@ -39,7 +39,6 @@ public class Trame{
 		return sb.toString();	
 	}
 	
-	
 	// Fonctions pour le constructeur
 	private Ethernet calculeEthernet() {
 		return new Ethernet(donnees);

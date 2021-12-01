@@ -1,36 +1,71 @@
 package pobj;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.StringJoiner;
+import pobj.champs.Couche7;
+import pobj.champs.DHCP;
+import pobj.champs.DNS;
+import pobj.champs.Ethernet;
+import pobj.champs.IP;
+import pobj.champs.UDP;
 
 public class Trame{
-	private List<String> trame;
-	public Trame(List<String> t) {
-		trame= new ArrayList<>(t);
-	}
+	private Donnees donnees;
+	private Ethernet eth;
+	private IP ip;
+	private UDP udp;
+	private Couche7 couche7;
 	
-	public String get(int i) {
-		return trame.get(i);
-	}
-	
-	public String get(int i, int j) {
-		StringBuilder sb= new StringBuilder();
-		for (int indice=0; indice<j; indice++) {
-			sb.append(trame.get(indice));
+	public Trame(Donnees trame) {
+		donnees = trame;
+		try {
+			// Initialisation des champs
+			eth= calculeEthernet();
+			ip = calculeIP();
+			udp = calculeUDP();
+			couche7 = calculeCouche7();
 		}
-		return sb.toString();
-	}
-	
-	public String get(int i, int j, String s) {
-		StringJoiner sb= new StringJoiner(s);
-		for (int indice=0; indice<j; indice++) {
-			sb.add(trame.get(indice));
+		catch( Exception e) {
+			System.out.println("Fichier invalide");
 		}
-		return sb.toString();
 	}
 	
-	public Trame subTrame(int i) {
-		return new Trame(trame.subList(i, trame.size()));
+	public String toString() {
+		StringJoiner sb = new StringJoiner("\n");
+		sb.add(eth.toString());
+		sb.add(ip.toString());
+		sb.add(udp.toString());
+		sb.add(couche7.toString());
+		return sb.toString();	
+	}
+	
+	
+	// Fonctions pour le constructeur
+	private Ethernet calculeEthernet() {
+		return new Ethernet(donnees);
+	}
+	
+	private IP calculeIP() {
+		donnees = donnees.subDonnees(14);
+		return new IP(donnees);
+	}
+	
+	private UDP calculeUDP() {
+		donnees = donnees.subDonnees(ip.IHL*4);
+		return new UDP(donnees);
+	}
+	
+	private Couche7 calculeCouche7() {
+		donnees= donnees.subDonnees(8);
+		// On regarde les numéros de port Source et Destination
+		int portSrc= udp.getPortSrc();
+		int portDest= udp.getPortDest();
+		// On verifie si on utilise DNS ou DHCP
+		if (portSrc==53 || portDest ==53)
+			return new DNS(donnees);
+		else {
+			if (portSrc==67 || portDest ==67)
+				return new DHCP(donnees);
+			else throw new IllegalArgumentException();
+		}
 	}
 }

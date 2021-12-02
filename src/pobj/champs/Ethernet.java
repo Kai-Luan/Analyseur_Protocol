@@ -10,7 +10,7 @@ public class Ethernet {
 	public Ethernet(Donnees trame) {
 		dest= trame.get(0, 6, ":");
 		src= trame.get(6, 12, ":");
-		type= trame.get(12, 14);
+		type= trame.parseHexa(12, 14);
 	}
 	
 	// Retourne en String, l'entête Ethernet

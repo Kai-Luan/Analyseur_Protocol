@@ -24,17 +24,17 @@ public class IP {
 		tos= trame.parseInt(1);
 		totalLength= trame.parseInt(2,4);
 		// A partir de l'octet n°4
-		identifier= trame.get(4,6);
+		identifier= trame.parseHexa(4,6);
 		flags= calculeFlags(trame);
 		offset= calculeOffset(trame);
 		// A partir de l'octet n°8
 		ttl= trame.parseInt(8);
 		protocol= calculeProtocol(trame);
-		checksum= trame.get(10,12);
+		checksum= trame.parseHexa(10,12);
 		// A partir de l'octet n°12
-		src= calculeSrc(trame);
+		src= trame.getIP(12, 16);
 		// A partir de l'octet n°16
-		dest= calculeDest(trame);
+		dest= trame.getIP(16, 20);
 		// A partir de l'octet n°20
 		listOption = calculeOption(trame);
 	}
@@ -48,32 +48,17 @@ public class IP {
 		sb.add("Type of service: "+ tos);
 		sb.add("Total Length: "+ totalLength);
 		sb.add("Identifier "+ identifier);
-		sb.add("Flags: "+ flags.toString());
+		sb.add("Flags: ");
+		sb.add("  Reserved bit: " + flags[0]);
+		sb.add("  Don't fragment: " + flags[1]);
+		sb.add("  More fragments: " + flags[2]);
 		sb.add("Fragment offset: "+ offset);
 		sb.add("Protocol: "+ protocol);
 		sb.add("Header Checksum: "+ checksum);
+		sb.add("Source Address: "+ src);
+		sb.add("Destination Address: "+ dest);
 		return sb.toString();
 		
-	}
-	
-	String calculeSrc(Donnees trame) {;
-		return calculeIp(trame.get(12,16,":"));
-	}
-	
-	
-	public String calculeDest(Donnees trame) {
-		return calculeIp(trame.get(16,20,":"));
-	}
-	
-	// Renvoie l'addresse ip sous format décimale 
-	// avec "." comme séparateur
-	private String calculeIp(String s) {
-		StringJoiner sb= new StringJoiner(".");
-		String[] tab= s.split(":");
-		for (String val : tab) {
-			sb.add(String.valueOf(Integer.parseInt(val, 16)));
-		}
-		return sb.toString();
 	}
 	
 	// Calcule les valeurs du flags
@@ -91,7 +76,6 @@ public class IP {
 	
 	// Calcule la valeur de offset selon le flags
 	private int calculeOffset(Donnees trame) {
-		String s = trame.get(6,8);
 		int val = trame.parseInt(6);
 		val-= 64*flags[1] + 32*flags[2];
 		return val+trame.parseInt(7);

@@ -13,8 +13,9 @@ public class GUI {
 	JPanel panel = new JPanel();
 	JLabel label= new JLabel();
 	JTextArea text;
+	JTextArea trame;
 	
-	public GUI(String res) {
+	public GUI(String res, String data) {
 		panel.setBorder(BorderFactory.createEmptyBorder(200, 200, 200, 200));
 
 		frame.add(panel);
@@ -22,12 +23,17 @@ public class GUI {
 		frame.setTitle("Our GUI");
 		
 
-		label.setText("Bonjour\nJe suis trop fort");
+		label.setText("Bonjour");
 		panel.add(label);
 		
 		text= new JTextArea(res);
 		text.setEditable(false);
 		panel.add(text);
+		
+		
+		trame= new JTextArea(data);
+		trame.setEditable(false);
+		panel.add(trame);
 		
 		frame.setSize(1000, 1000);
 		frame.setVisible(true);
@@ -41,7 +47,7 @@ public class GUI {
 			Donnees trame = new Donnees(s.get(0));
 			Trame t = new Trame(trame);
 			res = t.toString();
-			new GUI(res);
+			new GUI(res, trame.toString());
 		}
 		catch (IOException e) {
 			e.printStackTrace();

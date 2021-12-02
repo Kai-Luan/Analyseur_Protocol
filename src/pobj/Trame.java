@@ -22,7 +22,7 @@ public class Trame{
 			eth= calculeEthernet();
 			ip = calculeIP();
 			udp = calculeUDP();
-			//couche7 = calculeCouche7();
+			couche7 = calculeCouche7();
 		}
 		catch( Exception e) {
 			e.printStackTrace();
@@ -35,7 +35,7 @@ public class Trame{
 		sb.add(eth.toString());
 		sb.add(ip.toString());
 		sb.add(udp.toString());
-		//sb.add(couche7.toString());
+		sb.add(couche7.toString());
 		return sb.toString();	
 	}
 	
@@ -51,11 +51,14 @@ public class Trame{
 	
 	private UDP calculeUDP() {
 		donnees = donnees.subDonnees(ip.IHL*4);
+		donnees.affiche();
 		return new UDP(donnees);
 	}
 	
 	private Couche7 calculeCouche7() {
 		donnees= donnees.subDonnees(8);
+		donnees.affiche();
+		System.out.println("taille: " +donnees.size());
 		// On regarde les numéros de port Source et Destination
 		// On verifie si on utilise DNS ou DHCP
 		if (udp.portSrc==53 || udp.portDest ==53)

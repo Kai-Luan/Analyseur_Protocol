@@ -9,7 +9,13 @@ public class Donnees {
 	public Donnees(String t) {
 		trame= new ArrayList<>();
 		for (String s : t.split(" "))
-			trame.add(s);
+			try {
+				if (Integer.parseInt(s, 16) <= 255)
+				trame.add(s);
+			}
+			catch (Exception e) {
+				continue;
+		}
 	}
 	
 	public Donnees(List<String> t) {
@@ -36,6 +42,16 @@ public class Donnees {
 		return Integer.parseInt(get(i), 16);
 	}
 	
+	public String parseHexa(int i) {
+		return "0x"+get(i);
+	}
+	
+	public String parseHexa(int i, int j) {
+		return "0x"+get(i,j);
+	}
+	
+	
+	
 	public String get(int i, int j, String s) {
 		StringJoiner sb= new StringJoiner(s);
 		for (int indice=i; indice<j; indice++) {
@@ -44,12 +60,16 @@ public class Donnees {
 		return sb.toString();
 	}
 	
-	public Donnees subDonnees(int i) {
-		return new Donnees(trame.subList(i, trame.size()));
+	public String getIP(int i, int j) {
+		StringJoiner sb= new StringJoiner(".");
+		for (int indice=i; indice<j; indice++) {
+			sb.add(String.valueOf(parseInt(indice)));
+		}
+		return sb.toString();
 	}
 	
-	public Donnees subDonnees(int i, int j) {
-		return new Donnees(trame.subList(i, j));
+	public Donnees subDonnees(int i) {
+		return new Donnees(trame.subList(i, trame.size()));
 	}
 	
 	public int size() {
@@ -61,5 +81,16 @@ public class Donnees {
 			if (i%4==0 && i!=0) System.out.println();
 			System.out.print(" " +trame.get(i));
 		}
+		System.out.println("\n");
 	}
+	
+	@Override
+	public String toString() {
+		StringJoiner sb = new StringJoiner(" ", "Trame: \n ","");
+		for (int i=0; i<trame.size(); i++) {
+			if (i%16==0 && i!=0) sb.add("\n");
+			sb.add(trame.get(i));
+		}
+		return sb.toString();
+		}
 }

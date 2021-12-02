@@ -1,4 +1,5 @@
 package pobj;
+import java.awt.Dimension;
 import java.io.IOException;
 import java.util.List;
 
@@ -6,34 +7,39 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class GUI {
 	JFrame frame = new JFrame();
-	JPanel panel = new JPanel();
-	JLabel label= new JLabel();
+	JPanel mainPanel = new JPanel();
+	JScrollPane contientTrame;
+	JScrollPane contientData;
 	JTextArea text;
 	JTextArea trame;
 	
-	public GUI(String res, String data) {
-		panel.setBorder(BorderFactory.createEmptyBorder(200, 200, 200, 200));
+	public GUI(String data, String octets) {
+		mainPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 
-		frame.add(panel);
+		frame.add(mainPanel);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("Our GUI");
 		
-
-		label.setText("Bonjour");
-		panel.add(label);
-		
-		text= new JTextArea(res);
+		// Affiche l'analyse de la trame
+		text= new JTextArea(data);
 		text.setEditable(false);
-		panel.add(text);
+		contientData = new JScrollPane(text);
+		contientData.setPreferredSize(new Dimension(400, 450));
 		
-		
-		trame= new JTextArea(data);
+		// Affiche les octets de la trame
+		trame= new JTextArea(octets);
 		trame.setEditable(false);
-		panel.add(trame);
+		contientTrame = new JScrollPane(trame);
+		contientTrame.setPreferredSize(new Dimension(500, 500));
+		
+		// Ajouts des zones de texte dans la fenêtre principale
+		mainPanel.add(contientData);
+		mainPanel.add(contientTrame);
 		
 		frame.setSize(1000, 1000);
 		frame.setVisible(true);
@@ -41,13 +47,13 @@ public class GUI {
 	}
 	
 	public static void main(String[] args) {
-		String res;
+		String data;
 		try {
 			List<String> s =Parser.parser("data/trame2.txt");
-			Donnees trame = new Donnees(s.get(0));
-			Trame t = new Trame(trame);
-			res = t.toString();
-			new GUI(res, trame.toString());
+			Donnees octets= new Donnees(s.get(0));
+			Trame t = new Trame(octets);
+			data = t.toString();
+			new GUI(data, octets.toString());
 		}
 		catch (IOException e) {
 			e.printStackTrace();

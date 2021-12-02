@@ -92,5 +92,5 @@ public class Donnees {
 			sb.add(trame.get(i));
 		}
 		return sb.toString();
-		}
+	}
 }

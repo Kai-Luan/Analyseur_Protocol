@@ -51,14 +51,11 @@ public class Trame{
 	
 	private UDP calculeUDP() {
 		donnees = donnees.subDonnees(ip.IHL*4);
-		donnees.affiche();
 		return new UDP(donnees);
 	}
 	
 	private Couche7 calculeCouche7() {
 		donnees= donnees.subDonnees(8);
-		donnees.affiche();
-		System.out.println("taille: " +donnees.size());
 		// On regarde les numéros de port Source et Destination
 		// On verifie si on utilise DNS ou DHCP
 		if (udp.portSrc==53 || udp.portDest ==53)

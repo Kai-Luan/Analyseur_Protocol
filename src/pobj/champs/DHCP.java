@@ -1,5 +1,7 @@
 package pobj.champs;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringJoiner;
 
 import pobj.Donnees;
@@ -15,7 +17,7 @@ public class DHCP implements Couche7 {
 	String client_mac_padding;
 	String server_name, boot_filename;
 	String magic_cookie;
-	String options;
+	List<String> options = new ArrayList<>();
 	
 	public DHCP(Donnees trame) {
 		opcode = calcule_opcode(trame);
@@ -92,6 +94,58 @@ public class DHCP implements Couche7 {
 		for (int i= 28; i<28+HLen; i++) sj.add(trame.get(i));
 		for (int i= 28+HLen; i<44; i++) sb.append("OO");
 		client_mac_padding = sb.toString();
+		return sj.toString();
+	}
+	
+	// Type_Length_Value
+	private String calcule_options(Donnees trame) {
+		int indice =236;
+		int num_option = trame.parseInt(indice);
+		while (num_option!=255) {
+			
+		}
+		return "";
+	}
+	private String calcule_option_name(int num) {
+		switch(num) {
+			case 53:
+				
+			default:
+				return ""+num;
+		}
+	}
+	
+	// Calcule Option 53: DHCP Message Type
+	private String calcule_Message_Type(Donnees trame, int indice) {
+		StringJoiner sj = new StringJoiner("\n  ", "(53) DHCP Message Type:\n  ","");
+		if (trame.parseInt(indice+1) != 1) throw new IllegalArgumentException("DHCP Message Type option: longueur different à 1");
+		sj.add("Length: 1");
+		switch(trame.parseInt(indice+2)) {
+			case 1:
+				sj.add("DHCP: Discover (1)");
+				break;
+			case 2:
+				sj.add("DHCP: Offer (2)");
+				break;
+			case 3:
+				sj.add("DHCP: Request (3)");
+				break;
+			case 4:
+				sj.add("DHCP: Decline (4)");
+				break;
+			case 5:
+				sj.add("DHCP: Pack (5)");
+				break;
+			case 6:
+				sj.add("DHCP: Nak (6)");
+				break;
+			case 7:
+				sj.add("DHCP: Release (7)");
+				break;
+			case 8:
+				sj.add("DHCP: Inform (8)");
+				break;
+		}
 		return sj.toString();
 	}
 }

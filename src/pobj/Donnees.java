@@ -87,6 +87,15 @@ public class Donnees {
 		}
 		System.out.println("\n");
 	}
+	
+	public void affiche(int i) {
+		System.out.println("indice: "+ i);
+		for (i+=0; i<trame.size(); i++) {
+			if (i%4==0 && i!=0) System.out.println();
+			System.out.print(" " +trame.get(i));
+		}
+		System.out.println("\n");
+	}
 
 	
 	@Override

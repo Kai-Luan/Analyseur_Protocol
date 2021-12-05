@@ -25,17 +25,14 @@ public class DNS implements Couche7 {
 		additional_count = trame.parseInt(10,12);
 		// On calcule les Resource Record
 		int indice = 12;
-		
 		indice = calcule_RRs(trame, indice, questions, question_count, 3);
-		
 		indice = calcule_RRs(trame, indice, answers, question_count, 6);
-		//indice = calcule_RRs(trame, indice, authority, authority_count, 6);
-		//indice = calcule_RRs(trame, indice, additional, additional_count, 6);
+		indice = calcule_RRs(trame, indice, authority, authority_count, 6);
+		indice = calcule_RRs(trame, indice, additional, additional_count, 6);
 	}
 
 	
 	private int calcule_RRs(Donnees trame, int indice, List<String[]> RRs, int count, int taille_RR) {
-		
 		for (int i=0; i<count; i++) {
 			String[] RR = new String[taille_RR];
 			// On remplit 3 premier champs de RR
@@ -46,9 +43,7 @@ public class DNS implements Couche7 {
 				indice = calcule_RR_Complet(trame, indice, RR);
 			}
 			RRs.add(RR);
-		}
-		
-		
+		}	
 		return indice;
 	}
 	
@@ -91,10 +86,12 @@ public class DNS implements Couche7 {
 					sb.append((char) trame.parseInt(++indice));
 				}
 				sb.append(".");
+				// si c'est le dernier label, et on retourne indice+1 (à cause du 0x00)
+				if (trame.parseInt(indice)==0) return ++indice;
 			}
 			length= trame.parseInt(indice);
 		}
-		return ++indice;
+		return indice;
 	}
 	
 	private int calcule_RR_Complet(Donnees trame, int indice, String[] champs) {

@@ -1,6 +1,7 @@
 package pobj;
 import java.awt.Dimension;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -49,7 +50,7 @@ public class GUI {
 	public static void main(String[] args) {
 		String data;
 		try {
-			List<String> s =Parser.parser("data/trame2.txt");
+			List<String> s =Parser.parser("data/trame1.txt");
 			Donnees octets= new Donnees(s.get(0));
 			Trame t = new Trame(octets);
 			data = t.toString();

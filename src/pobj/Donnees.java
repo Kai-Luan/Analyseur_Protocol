@@ -1,5 +1,6 @@
 package pobj;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
@@ -50,6 +51,9 @@ public class Donnees {
 		return "0x"+get(i,j);
 	}
 	
+	public char parseBit(int i, int j) {
+		return new BigInteger(trame.get(i), 16).toString(2).charAt(j);
+	}
 	
 	
 	public String get(int i, int j, String s) {
@@ -83,6 +87,7 @@ public class Donnees {
 		}
 		System.out.println("\n");
 	}
+
 	
 	@Override
 	public String toString() {

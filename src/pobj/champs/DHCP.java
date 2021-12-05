@@ -106,18 +106,22 @@ public class DHCP implements Couche7 {
 		}
 		return "";
 	}
-	private String calcule_option_name(int num) {
+	
+	private int calcule_option(Donnees trame, int indice) {
+		int num = trame.parseInt(indice);
 		switch(num) {
 			case 53:
-				
+				return calcule_Message_Type(trame, indice);
+			case 0:
+				return 1;
 			default:
-				return ""+num;
+				return calcule_Option_Inconnue(trame, indice);
 		}
 	}
 	
 	// Calcule Option 53: DHCP Message Type
-	private String calcule_Message_Type(Donnees trame, int indice) {
-		StringJoiner sj = new StringJoiner("\n  ", "(53) DHCP Message Type:\n  ","");
+	private int calcule_Message_Type(Donnees trame, int indice) {
+		StringJoiner sj = new StringJoiner("\n  ", "Option: (53) DHCP Message Type:\n  ","");
 		if (trame.parseInt(indice+1) != 1) throw new IllegalArgumentException("DHCP Message Type option: longueur different à 1");
 		sj.add("Length: 1");
 		switch(trame.parseInt(indice+2)) {
@@ -146,6 +150,20 @@ public class DHCP implements Couche7 {
 				sj.add("DHCP: Inform (8)");
 				break;
 		}
-		return sj.toString();
+		options.add(sj.toString());
+		return 3;
+	}
+	
+	public int calcule_Option_Inconnue(Donnees trame, int indice) {
+		StringBuilder sj = new StringBuilder("Option: "+ trame.parseInt(0));
+		int length= trame.parseInt(indice+1);
+		sj.append("\nLength: "+ length);
+		sj.append("\nValue: " + trame.parseHexa(indice+ 2, indice+2+length));
+		options.add(sj.toString());
+		return 3;
+	}
+	
+	public String calcule_taille(Donnees trame) {
+		return "";
 	}
 }

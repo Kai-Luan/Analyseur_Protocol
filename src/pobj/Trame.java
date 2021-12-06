@@ -6,6 +6,8 @@ import pobj.champs.DHCP;
 import pobj.champs.DNS;
 import pobj.champs.Ethernet;
 import pobj.champs.IP;
+import pobj.champs.IPv4;
+import pobj.champs.IPv6;
 import pobj.champs.UDP;
 
 public class Trame{
@@ -40,12 +42,19 @@ public class Trame{
 	}
 	
 	private IP calculeIP() {
+		IP ip;
 		donnees = donnees.subDonnees(14);
-		return new IP(donnees);
+		// On calcule la version de l'IP
+		String s1= donnees.get(0);
+		int version= Integer.parseInt(String.valueOf(s1.charAt(0)));
+		if (version==4) ip=  new IPv4(donnees);
+		else if (version==6) ip= new IPv6(donnees);
+		else throw new IllegalArgumentException("IP: version different de 4 et 6");
+		donnees = donnees.subDonnees(ip.length());
+		return ip;
 	}
 	
 	private UDP calculeUDP() {
-		donnees = donnees.subDonnees(ip.IHL*4);
 		return new UDP(donnees);
 	}
 	

@@ -21,8 +21,8 @@ public class IPv6 implements IP{
 		payload_length = trame.parseInt(4,6);
 		next_header = trame.parseInt(6);
 		hop_limit = trame.parseInt(7);
-		
-		
+		src = trame.getIPv6(8, 24);
+		dest = trame.getIPv6(24, 40);
 	}
 	
 	private String calcule_traffic_class(String s) {
@@ -38,7 +38,10 @@ public class IPv6 implements IP{
 	public String toString() {
 		StringJoiner sb = new StringJoiner("\n  ", "Protocol IP\n  ","\n");
 		sb.add("Version: 6");
-
+		sb.add(traffic_class);
+		sb.add("Payload Length: "+ payload_length);
+		sb.add("Next Header: "+ next_header);
+		sb.add("Hop Limit: "+ hop_limit);
 		sb.add("Source Address: "+ src);
 		sb.add("Destination Address: "+ dest);
 		return sb.toString();

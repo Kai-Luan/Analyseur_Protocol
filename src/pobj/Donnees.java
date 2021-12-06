@@ -75,6 +75,25 @@ public class Donnees {
 		return sb.toString();
 	}
 	
+	public String getIPv6(int i, int j) {
+		StringJoiner sb= new StringJoiner(":");
+		for (int indice=i; indice<j; indice+=2) {
+			String s = get(i, i+2);
+			int indice_not_zero=0;
+			for (int c =0; c<4; c++) {
+				if ((char) s.charAt(c) != '0') break;
+				indice_not_zero++;
+			}
+			if (indice_not_zero!=0) {
+				if ( indice_not_zero==4) s= "";
+				else s= s.substring(indice_not_zero);
+			}
+			sb.add(s);
+		}
+		return sb.toString();
+	}
+	
+	
 	public Donnees subDonnees(int i) {
 		return new Donnees(trame.subList(i, trame.size()));
 	}

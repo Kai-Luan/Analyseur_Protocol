@@ -11,7 +11,8 @@ public class IPv4 implements IP {
 	String identifier;
 	int[] flags;
 	int offset;
-	int ttl, protocol;
+	int ttl;
+	String protocol;
 	String checksum;
 	String src, dest;
 	List<String> listOption;
@@ -83,10 +84,10 @@ public class IPv4 implements IP {
 	}
 	
 	// Calcule le protocol
-	private int calculeProtocol(Donnees trame) {		
+	private String calculeProtocol(Donnees trame) {		
 		int i = trame.parseInt(9);
 		if (i!=17) throw new IllegalArgumentException("IP: mauvais protocol");
-		return i;
+		return "UDP (17)";
 	}
 	
 	// Calcule la liste des options dans l'entete IP

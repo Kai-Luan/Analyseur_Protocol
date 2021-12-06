@@ -51,10 +51,13 @@ public class Donnees {
 		return "0x"+get(i,j);
 	}
 	
-	public char parseBit(int i, int j) {
-		return new BigInteger(trame.get(i), 16).toString(2).charAt(j);
+	public String parseBit(int i) {
+		return new BigInteger(trame.get(i), 16).toString(2);
 	}
 	
+	public String parseBit(int i, int j) {
+		return new BigInteger(get(i,j), 16).toString(2);
+	}
 	
 	public String get(int i, int j, String s) {
 		StringJoiner sb= new StringJoiner(s);

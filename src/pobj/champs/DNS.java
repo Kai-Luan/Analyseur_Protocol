@@ -187,11 +187,12 @@ public class DNS implements Couche7 {
 	// Calcule les flags
 	private String[] calcule_flags(Donnees trame) {
 		String[] res= new String[8];
+		String bits = trame.parseBit(2);
 		// QR
-		if (trame.parseBit(2, 0)=='0') res[0] = "QR: the message is a response (1)";
+		if (bits.charAt(0)=='0') res[0] = "QR: the message is a response (1)";
 		else res[0] = "QR: the message is a query (0)";
 		// OpCode
-		res[1] = String.format("OpCode: Standard query (%c)", trame.parseBit(2, 1));
+		res[1] = String.format("OpCode: Standard query (%c)", bits.charAt(1));
 		return res;
 	}
 }

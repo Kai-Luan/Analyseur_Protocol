@@ -16,6 +16,7 @@ public class IP {
 	String src, dest;
 	List<String> listOption;
 	
+	// Constructeur 
 	public IP(Donnees trame) {
 		// A partir de l'octet n°0
 		String s1= trame.get(0);
@@ -90,8 +91,7 @@ public class IP {
 	
 	// Calcule la liste des options dans l'entete IP
 	private List<String> calculeOption(Donnees trame) {
-		List<String> res = new ArrayList<>();
-		
+		List<String> res = new ArrayList<>();	
 		return res;
 	}
 }

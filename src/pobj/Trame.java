@@ -19,7 +19,7 @@ public class Trame{
 		donnees = trame;
 		try {
 			// Initialisation des champs
-			eth= calculeEthernet();
+			eth= new Ethernet(donnees);
 			ip = calculeIP();
 			udp = calculeUDP();
 			couche7 = calculeCouche7();
@@ -37,11 +37,6 @@ public class Trame{
 		sb.add(udp.toString());
 		sb.add(couche7.toString());
 		return sb.toString();	
-	}
-	
-	// Fonctions pour le constructeur
-	private Ethernet calculeEthernet() {
-		return new Ethernet(donnees);
 	}
 	
 	private IP calculeIP() {

@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+// Affiche dans une Fenêtre les trames et sa descrption
 public class GUI {
 	JFrame frame = new JFrame();
 	JPanel mainPanel = new JPanel();
@@ -19,6 +20,7 @@ public class GUI {
 	JTextArea text;
 	JTextArea trame;
 	
+	// L'interface graphique pour afficher la description de la trame
 	public GUI(String data, String octets) {
 		mainPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 

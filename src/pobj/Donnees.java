@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.StringJoiner;
 
 public class Donnees {
-	private List<String> trame;
+	List<String> trame;
 	public Donnees(String t) {
 		trame= new ArrayList<>();
 		for (String s : t.split(" "))
@@ -21,6 +21,11 @@ public class Donnees {
 	
 	public Donnees(List<String> t) {
 		trame= new ArrayList<>(t);
+	}
+	
+	public boolean add(String octet) {
+		Integer.parseInt(octet, 16);
+		return trame.add(octet);
 	}
 	
 	public String get(int i) {

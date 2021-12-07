@@ -3,6 +3,7 @@ import java.awt.Dimension;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.StringJoiner;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -49,14 +50,14 @@ public class GUI {
 		frame.pack();
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) {		
 		String data;
 		try {
-			List<String> s =Parser.parser("data/trame1.txt");
+			List<String> s =Parser.parser("data/trame_DNS.txt");
 			Donnees octets= new Donnees(s.get(0));
 			Trame t = new Trame(octets);
 			data = t.toString();
-			new GUI(data, octets.toString());
+			//new GUI(data, octets.toString());
 		}
 		catch (IOException e) {
 			e.printStackTrace();

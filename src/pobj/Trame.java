@@ -11,11 +11,11 @@ import pobj.champs.IPv6;
 import pobj.champs.UDP;
 
 public class Trame{
-	private Donnees donnees;
-	private Ethernet eth;
-	private IP ip;
-	private UDP udp;
-	private Couche7 couche7;
+	Donnees donnees;
+	Ethernet eth;
+	IP ip;
+	UDP udp;
+	Couche7 couche7;
 	
 	public Trame(Donnees trame) {
 		donnees = trame;

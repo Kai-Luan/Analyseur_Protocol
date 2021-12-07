@@ -95,8 +95,10 @@ public class DHCP implements Couche7 {
 	private int calcule_option(Donnees trame, int indice) {
 		int num = trame.parseInt(indice);
 		switch(num) {
+			// Message Type
 			case 53:
-				return calcule_Message_Type(trame, indice);
+					message_Type(trame, indice);
+				return 3;
 			case 0:
 				return 1;
 			default:
@@ -105,38 +107,18 @@ public class DHCP implements Couche7 {
 	}
 	
 	// Calcule Option 53: DHCP Message Type
-	private int calcule_Message_Type(Donnees trame, int indice) {
-		StringJoiner sj = new StringJoiner("\n  ", "Option: (53) DHCP Message Type:\n  ","");
-		if (trame.parseInt(indice+1) != 1) throw new IllegalArgumentException("DHCP Message Type option: longueur different à 1");
-		sj.add("Length: 1");
-		switch(trame.parseInt(indice+2)) {
-			case 1:
-				sj.add("DHCP: Discover (1)");
-				break;
-			case 2:
-				sj.add("DHCP: Offer (2)");
-				break;
-			case 3:
-				sj.add("DHCP: Request (3)");
-				break;
-			case 4:
-				sj.add("DHCP: Decline (4)");
-				break;
-			case 5:
-				sj.add("DHCP: Pack (5)");
-				break;
-			case 6:
-				sj.add("DHCP: Nak (6)");
-				break;
-			case 7:
-				sj.add("DHCP: Release (7)");
-				break;
-			case 8:
-				sj.add("DHCP: Inform (8)");
-				break;
+	private String message_Type(Donnees trame, int type) {
+		switch(type) {
+			case 1: return "DHCP: Discover (1)";
+			case 2: return "DHCP: Offer (2)";
+			case 3: return "DHCP: Request (3)";
+			case 4: return "DHCP: Decline (4)";
+			case 5: return "DHCP: Pack (5)";
+			case 6: return "DHCP: Nak (6)";
+			case 7: return "DHCP: Release (7)";
+			case 8: return "DHCP: Inform (8)";
+			default: return "DHCP: Unassigned";
 		}
-		options.add(sj.toString());
-		return 3;
 	}
 	
 	public int calcule_Option_Inconnue(Donnees trame, int indice) {

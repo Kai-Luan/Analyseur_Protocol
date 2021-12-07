@@ -97,7 +97,6 @@ public class DHCP implements Couche7 {
 		switch(num) {
 			// Message Type
 			case 53:
-					message_Type(trame, indice);
 				return 3;
 			case 0:
 				return 1;

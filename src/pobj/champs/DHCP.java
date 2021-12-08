@@ -100,82 +100,90 @@ public class DHCP implements Couche7 {
 		return "";
 	}
 	
-	// Decode l'option Ãƒ  partir de l'octet Ãƒ  l'indice donnÃƒÂ©e
+	// Decode l'option à partir de d'un octet
 	private String calcule_option(Donnees trame, int indice) {
 		int num_option = trame.parseInt(indice);
-		int tmp_taille = trame.parseInt(indice+1);
+		int length = trame.parseInt(indice+1);
+		int indice_max;
+		indice= indice+2;
 		String[] options = {"Pad","Subnet Mask","Time Offset","Router","Time Server","Name Server","Domain Server","Log Server","Quotes Server","LPR Server","Impress Server","RLP Server","Hostname","Boot File Size","Merit Dump File","Domain Name","Swap Server","Root Path","Extension File","Forward On/Off","SrcRte On/Off","Policy Filter","Max DG Assembly","Default IP TTL","MTU Timeout","MTU Plateau","MTU Interface","MTU Subnet","Broadcast Address","Mask Discovery","Mask Supplier","Router Discovery","Router Request","Static Route","Trailers","ARP Timeout","Ethernet","Default TCP TTL","Keepalive Time","Keepalive Data","NIS Domain","NIS Servers","NTP Servers","Vendor Specific","NETBIOS Name Srv","NETBIOS Dist Srv","NETBIOS Node Type,NETBIOS Scope","X Window Font","X Window Manager","Address Request","Address Time","Overload","DHCP Msg Type","DHCP Server Id","Parameter List","DHCP Message","DHCP Max Msg Size","Renewal Time","Rebinding Time","Class Id","Client Id","NetWare/IP Domain","NetWare/IP Option","NIS-Domain-Name","NIS-Server-Addr","Server-Name","Bootfile-Name","Home-Agent-Addrs","SMTP-Server","POP3-Server","NNTP-Server","WWW-Server","Finger-Server","IRC-Server","StreetTalk-Server","STDA-Server","User-Class","Directory Agent","Service Scope","Rapid Commit","Client FQDN","Relay Agent Information","iSNS,REMOVED/Unassigned","NDS Servers","NDS Tree Name","NDS Context","BCMCS Controller Domain Name list","BCMCS Controller IPv4 address option","Authentication","client-last-transaction-time option","associated-ip option","Client System","Client NDI","LDAP","REMOVED/Unassigned","UUID/GUID","User-Auth","GEOCONF_CIVICPCode","PCode","TCode","REMOVED/Unassigned","REMOVED/Unassigned","REMOVED/Unassigned","REMOVED/Unassigned","REMOVED/Unassigned","REMOVED/Unassigned","IPv6-Only Preferred","OPTION_DHCP4O6_S46_SADDR","REMOVED/Unassigned","Unassigned","Netinfo Address","Netinfo Tag","DHCP Captive-Portal","REMOVED/Unassigned","Auto-Config","Name Service Search","Subnet Selection Option","Domain Search","SIP Servers DHCP Option","Classless Static Route Option","CCC","GeoConf Option","V-I Vendor Class","V-I Vendor-Specific Information","Removed/Unassigned","Removed/Unassigned","PXE - undefined (vendor specific)","PXE - undefined (vendor specific)","PXE - undefined (vendor specific)","PXE - undefined (vendor specific)","PXE - undefined (vendor specific)","PXE - undefined (vendor specific)","PXE - undefined (vendor specific)","PXE - undefined (vendor specific)","OPTION_PANA_AGENT","OPTION_V4_LOST","OPTION_CAPWAP_AC_V4","OPTION-IPv4_Address-MoS","OPTION-IPv4_FQDN-MoS","SIP UA Configuration Service Domains","OPTION-IPv4_Address-ANDSF","OPTION_V4_SZTP_REDIRECT","GeoLoc","FORCERENEW_NONCE_CAPABLE","RDNSS Selection","OPTION_V4_DOTS_RI","OPTION_V4_DOTS_ADDRESS","Unassigned","TFTP server address","status-code","base-time","start-time-of-state","query-start-time","query-end-time","dhcp-state","data-source","OPTION_V4_PCP_SERVER","OPTION_V4_PORTPARAMS","Unassigned","OPTION_MUD_URL_V4","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Etherboot (Tentatively Assigned - 2005-06-23)","IP Telephone (Tentatively Assigned - 2005-06-23)","Etherboot (Tentatively Assigned - 2005-06-23)","PacketCable and CableHome (replaced by 122)","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","PXELINUX Magic","Configuration File","Path Prefix","Reboot Time","OPTION_6RD","OPTION_V4_ACCESS_DOMAIN","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Unassigned","Subnet Allocation Option","Virtual Subnet Selection (VSS) Option","Unassigned","Unassigned","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","Reserved (Private Use)","End"};
 
-		String resp = "";
+		String resp = String.format("Option: (%d) %s \n     length: %d  \n     ", num_option, options[num_option], length);
 		int tmp = 0;
 		switch(num_option) {
+		// SubNet Mask
+		case 1:
+			return resp+ String.format("Subnet Mask: %s", trame.getIP(indice, indice+4));
+		// Router
 		case 3:
-			resp = " Option numero " + options[num_option] + " : \n" + "\tTaille : " + tmp_taille + "\n" + "\t valeurs : \n ";
-			tmp = 0;
-			while(tmp<tmp_taille) {
-				resp += "IP : " + trame.getIP(indice+2+tmp,indice+2+tmp+5) + "\n";
-				tmp+=5;
+			indice_max= indice+length;
+			while(indice < indice_max) {
+				resp += "Router : " + trame.getIP(indice,indice+4) + "\n";
+				indice= indice+4;
 			}
 			return resp ;
+		// Domain Server
 		case 6:
-			resp = " Option numero " + options[num_option] + " : \n" + "Taille : " + tmp_taille + "\n" + "\t valeurs : \n ";
-			tmp = 0;
-			while(tmp<tmp_taille) {
-				resp += "IP : " + trame.getIP(indice+2+tmp,indice+2+tmp+5) + "\n";
-				tmp+=5;
+			indice_max= indice+length;
+			while(indice < indice_max) {
+				resp += String.format("Domain Name Server: %s \n", trame.getIP(indice,indice+4));
+				indice= indice+4;
 			}
 			return resp ;
+		// Domain Name
+		case 15:
+			return resp+ calcule_name(trame, indice, length, "Domain Name: ");
+		// Static Route
 		case 33:
-			resp = " Option numero " + options[num_option] + " : \n" + "Taille : " + tmp_taille + "\n" + "\t valeurs : \n ";
-			tmp = 0;
-			while(tmp<tmp_taille) {
-				resp += "Destination : " + trame.getIP(indice+2+tmp,indice+2+tmp+5) + "\n";
-				resp += "Router : " + trame.getIP(indice+2+tmp+5,indice+2+tmp+9) + "\n\n";
-				tmp+=9;
+			indice_max = indice +length;
+			while(indice< indice_max) {
+				resp += "Destination : " + trame.getIP(indice,indice+4) + "\n";
+				resp += "Router : " + trame.getIP(indice+4,indice+8) + "\n\n";
+				indice+=8;
 			}
 			return resp ;
+		// IP Adress Lease Time:
 		case 51:
-			resp = " Option numero " + options[num_option] + " : \n" + "Taille : " + tmp_taille + "\n" + "\t valeurs : \n ";
-			resp += "Destination : " + trame.parseInt(indice+2,indice+2+tmp_taille) + "\n";
+			int seconds = trame.parseInt(indice,indice+length);
+			resp += String.format("IP Adress Lease Time: (%ds) %s \n", seconds,  conversion_temps(seconds));
 			return resp ;
+		// DHCP Message type
 		case 53:
-			resp = " Option numero " + options[num_option] + " : \n" + "Taille : " + tmp_taille + "\n" + "\t valeurs : \n ";
-			String[] types = {"DHCPDISCOVER","DHCPOFFER","DHCPREQUEST","DHCPDECLINE","DHCPACK","DHCPNAK","DHCPRELEASE","DHCPINFORM"};
-		    resp += "Message Type : " + types[trame.parseInt(indice+2)-1];
-			return resp ;
+			return resp+ message_Type(trame.parseInt(indice));
+		//DHCP Server Identifier
+		case 54:
+			return resp+ String.format("DHCP Server Identifier: %s", trame.getIP(indice, indice+4));
+		// Parameter Request
 		case 55:
-			resp = " Option numero " + options[num_option] + " : \n" + "Taille : " + tmp_taille + "\n" + "\t valeurs : \n ";
-			resp += trame.parseHexa(indice+2, indice+2+tmp_taille);
-			return resp ;
+		    StringJoiner sj = new StringJoiner("\n     Parameter Request List Item:  ", "     Parameter Request List Item:  ", "\n");
+		    for (int i=0; i<length; i++) {
+		    	int code= trame.parseInt(indice+1);
+		    	sj.add(String.format("(%d) %s", code, options[code]));
+		    }
+			return resp + sj.toString();
+		// Vender class Identifier
 		case 60:
-			resp = " Option numero " + options[num_option] + " : \n" + "Taille : " + tmp_taille + "\n" + "\t valeurs : \n ";
-			resp += trame.parseHexa(indice+2, indice+2+tmp_taille);
-			return resp ;
+			return resp + calcule_name(trame, indice, length, "Vender class identifier: ") ;
+		// Server Nmae
 		case 66:
-			resp = " Option numero " + options[num_option] + " : \n" + "Taille : " + tmp_taille + "\n" + "\t valeurs : \n ";
-			resp += trame.parseHexa(indice+2, indice+2+tmp_taille);
+			resp += trame.parseHexa(indice, indice+length);
 			return resp ;
 		case 67:
-			resp = " Option numero " + options[num_option] + " : \n" + "Taille : " + tmp_taille + "\n" + "\t valeurs : \n ";
-			resp += trame.parseHexa(indice+2, indice+2+tmp_taille);
+			resp += trame.parseHexa(indice, indice+length);
 			return resp ;
 		case 121:
-			resp = " Option numero " + options[num_option] + " : \n" + "Taille : " + tmp_taille + "\n" + "\t valeurs : \n ";
-			resp += trame.parseHexa(indice+2, indice+2+tmp_taille);
+			resp += trame.parseHexa(indice, indice+length);
 			return resp ;
 		case 150:
-			resp = " Option numero " + options[num_option] + " : \n" + "Taille : " + tmp_taille + "\n" + "\t valeurs : \n ";
-			resp += trame.parseHexa(indice+2, indice+2+tmp_taille);
+			resp += trame.parseHexa(indice, indice+length);
 			return resp ;
 		default:
-			String val = trame.parseHexa(indice+2, indice+2+tmp_taille);
-			resp = " Option numero " + options[num_option] + " : \n" + "Taille : " + tmp_taille + "\n" + "\t valeurs : \n " + val;
-			return resp;
+			return resp + trame.parseHexa(indice, indice+length);
 		}
 	}
 	
 	// Calcule Option 53: DHCP Message Type
-	private String message_Type(Donnees trame, int type) {
+	private String message_Type(int type) {
 		switch(type) {
 			case 1: return "DHCP: Discover (1)";
 			case 2: return "DHCP: Offer (2)";
@@ -198,6 +206,30 @@ public class DHCP implements Couche7 {
 		return 3;
 	}
 	
+	// Faire la conversion du temps en secondes 
+	//en temps en format jours / heures / minutes / secondes
+	private String conversion_temps(int ttl) {
+		StringJoiner sj = new StringJoiner(", ", " (", ")");
+		int jours, heures, minutes;
+		if (ttl/86400 >= 1) {
+			jours = ttl/86400;
+			ttl=  ttl - 86400*jours;
+			sj.add(jours + " days");
+		}	
+		if (ttl/3600 >= 1) {
+			heures = ttl/3600;
+			ttl=  ttl - 3600*heures;
+			sj.add(heures + "  hours");
+		}
+		if (ttl/60>= 1) {
+			minutes = ttl/60;
+			ttl=  ttl - 60*minutes;
+			sj.add(minutes + "  minutes");
+		}
+		if (ttl != 0) sj.add(ttl + " seconds");
+		return sj.toString();
+	}
+	
 	@Override
 	public String toString() {
 		StringJoiner sb = new StringJoiner("\n  ", "Protocol DHCP\n  ","\n");
@@ -217,6 +249,15 @@ public class DHCP implements Couche7 {
 		sb.add("Server host name: " + server_name);
 		sb.add("Boot file name: " + boot_filename);
 		for (String s: options) sb.add(s);
+		return sb.toString();
+	}
+	
+	public String calcule_name(Donnees trame, int indice, int length, String s) {
+	    StringBuilder sb= new StringBuilder(s);
+		for (int i=0; i<length; i++) {
+	    	int code= trame.parseInt(indice+1);
+	    	sb.append((char) trame.parseInt(indice++));
+	    }
 		return sb.toString();
 	}
 }

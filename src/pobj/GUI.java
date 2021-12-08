@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
@@ -29,11 +30,13 @@ public class GUI {
 	JPanel boutons = new JPanel(new GridLayout(10, 0));
 	JTextArea text, trame, analyse;
 	JLabel num_trame;
+	JFileChooser filechooser= new JFileChooser();
 	// Liste des trames avec leurs descriptions
 	List<Trame> trames =  new ArrayList<>();;
 	List<Donnees> donnees =  new ArrayList<>();;
 	
-	public static void main(String[] args) {		
+	public static void main(String[] args) {
+		Parser.parserbis("data/message.txt");
 		new GUI();
 	}
 	// Constructeur d'interface graphique
@@ -42,7 +45,7 @@ public class GUI {
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		frame.add(mainPanel);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setTitle("Analyseur Protocol: message.txt");
+		frame.setTitle("Analyseur Protocol:");
 		// Creation de la barre de  menu
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
@@ -56,8 +59,18 @@ public class GUI {
 				refreshBoutons();
 				trame.setText("");
 				analyse.setText("");
+				if (trames.size()!=0) saveItem.setEnabled(true);
 			}
 		});
+		// Bouton de sauvegarde
+		saveItem.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				saveFile();
+			}
+		});
+		
+		saveItem.setEnabled(false);
 		// Ajout du menu dans la fenêtre
 		fileMenu.add(loadItem);
 		fileMenu.add(saveItem);
@@ -89,6 +102,12 @@ public class GUI {
 		num_trame = new JLabel("Trame  n°  ", SwingConstants.CENTER);
 		mainPanel.add(num_trame, BorderLayout.NORTH);
 		
+		
+		// Application des filtres pour fichiers
+		filechooser.setFileFilter(new FileNameExtensionFilter("*.txt","txt"));
+		filechooser.setAcceptAllFileFilterUsed(false);
+		filechooser.setCurrentDirectory(new File("."));
+		
 		frame.setSize(1000, 1000);
 		frame.setVisible(true);
 		frame.pack();
@@ -96,8 +115,7 @@ public class GUI {
 	
 	// Selection d'un fichier
 	private void selectFile() {
-		JFileChooser filechooser= new JFileChooser();
-		filechooser.setCurrentDirectory(new File("."));
+		// Choisis le fichier à récupérer
 		int response = filechooser.showOpenDialog(null);
 		if (response != JFileChooser.APPROVE_OPTION) return;
 		File file =filechooser.getSelectedFile();
@@ -105,6 +123,15 @@ public class GUI {
 		String path = file.getAbsolutePath();
 		refreshTrames(path);
 	}
+	
+	private void saveFile() {
+		// Choisis le chemin du fichier à sauvegarder
+		int response = filechooser.showSaveDialog(null);
+		if (response != JFileChooser.APPROVE_OPTION) return;
+		File file =filechooser.getSelectedFile();
+		Parser.parseOut(file, trames);
+	}
+	
 	// Recalcule les trames du nouveau fichier donné par path
 	private void refreshTrames(String path) {
 		trames.clear();
@@ -118,10 +145,11 @@ public class GUI {
 				trames.add(t);
 			}
 		}
-		catch (IOException e) {
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
 	// Refait les boutons si on a un nouveau fichier
 	private void refreshBoutons() {
 		int taille;

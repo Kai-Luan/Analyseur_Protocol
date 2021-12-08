@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.StringJoiner;
 
 public class Donnees {
-	List<String> trame;
+	List<String> trame = new ArrayList<>();
+	int ligne_incomplète= -1;
+	
 	public Donnees(String t) {
-		trame= new ArrayList<>();
 		for (String s : t.split(" "))
 			try {
 				if (Integer.parseInt(s, 16) <= 255)
@@ -20,8 +21,14 @@ public class Donnees {
 	}
 	
 	public Donnees(List<String> t) {
-		trame= new ArrayList<>(t);
+		trame.addAll(t);
 	}
+	
+	public Donnees() {
+		
+	}
+	
+	
 	
 	public boolean add(String octet) {
 		Integer.parseInt(octet, 16);
@@ -97,7 +104,6 @@ public class Donnees {
 		}
 		return sb.toString();
 	}
-	
 	
 	public Donnees subDonnees(int i) {
 		return new Donnees(trame.subList(i, trame.size()));

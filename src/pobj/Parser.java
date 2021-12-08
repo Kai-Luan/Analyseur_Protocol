@@ -14,7 +14,7 @@ public class Parser {
 
 	public Parser() {}
 	
-	public static List<String> parser(String fileName){
+	public static List<String> parserbis(String fileName){
 		BufferedReader br = null;
 		List<Donnees> list_trame = new ArrayList<>();
 		StringBuilder sb= new StringBuilder();
@@ -52,7 +52,7 @@ public class Parser {
 		return res;
 	}
 	
-	public static List<Donnees> parserbis(String fileName){
+	public static List<Donnees> parser(String fileName){
 		BufferedReader br = null;
 		List<Donnees> list_donnees = new ArrayList<>();
 		Donnees donnees = new Donnees();
@@ -65,15 +65,17 @@ public class Parser {
 			String next_line;
 			while((next_line = br.readLine())!=null) {
 				s_next = next_line.split(" ");
+				int offset = -1;
 				int length = -1;
 				// On vérifie si on a un offset
 				try {
-					 length = Integer.parseInt(s_next[0]);
+					 offset = Integer.parseInt(s_next[0], 16);
+					 length= offset - Integer.parseInt(s_line[0], 16);
 				}
 				catch(Exception e) {
 					continue;
 				}
-				if (length != 0) readLine(donnees, s_line, length);
+				if (offset != 0) readLine(donnees, s_line, length);
 				else {
 					readLine(donnees, s_line, -1);
 					list_donnees.add(donnees);
@@ -81,6 +83,8 @@ public class Parser {
 				}
 				s_line = s_next;
 			}
+			readLine(donnees, s_line, -1);
+			list_donnees.add(donnees);
 			
 		} catch (IOException io) {
 			System.out.println("Erreur lors de la lecture du fichier\n");
@@ -145,10 +149,12 @@ public class Parser {
 			trame.add(octet);
 			n = n + 1;
 			if (length==-1) continue;
-			if (n < length) break;
+			if (n > length) break;
 		}
+		System.out.println();
 		if ( n < length) return false;
 		return true;
+
 	}
 	
 	private static int get_offset(String line) {

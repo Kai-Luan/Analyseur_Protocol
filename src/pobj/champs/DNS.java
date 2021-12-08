@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.StringJoiner;
 
 import pobj.Donnees;
-// Classe qui decode l'entête DNS
+// Classe qui decode l'entete DNS
 public class DNS implements Couche7 {
 	String id;
 	String[] flags;

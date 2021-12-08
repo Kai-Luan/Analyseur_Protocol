@@ -35,6 +35,8 @@ public class DHCP implements Couche7 {
 		client_mac = calcule_client_mac_address(trame);
 		server_name= calcule_name(trame, 44, 108);
 		boot_filename = calcule_name(trame, 108, 236);
+		options.add("Magic cookie: DHCP ("+ trame.parseHexa(236, 240)+")");
+		calcule_options(trame);
 	}
 	
 	// Decode le nom avec le debut et la fin des octets
@@ -82,21 +84,23 @@ public class DHCP implements Couche7 {
 	}
 		
 	private String calcule_options(Donnees trame) {
-		int indice =236;
+		int indice =240;
+		trame.affiche(indice);
 		int num_option = trame.parseInt(indice);
 		while (num_option!=255) {
 			int tmp_taille = trame.parseInt(indice+1);
 			String opt = calcule_option(trame,indice);
 			this.options.add(opt);
-			indice+=tmp_taille;
+			indice+=tmp_taille+2;
 			num_option = trame.parseInt(indice);
+			trame.affiche();
 		}
 		String resp = " Option numero 255 : End\n";
 		this.options.add(resp);
 		return "";
 	}
 	
-	// Decode l'option Ã  partir de l'octet Ã  l'indice donnÃ©e
+	// Decode l'option Ãƒ  partir de l'octet Ãƒ  l'indice donnÃƒÂ©e
 	private String calcule_option(Donnees trame, int indice) {
 		int num_option = trame.parseInt(indice);
 		int tmp_taille = trame.parseInt(indice+1);

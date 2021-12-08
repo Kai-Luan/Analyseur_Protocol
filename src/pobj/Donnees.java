@@ -25,7 +25,6 @@ public class Donnees {
 	}
 	
 	public Donnees() {
-		
 	}
 	
 	

@@ -23,7 +23,7 @@ import java.awt.BorderLayout;
 
 import java.awt.GridLayout;
 
-// Affiche dans une Fenêtre les trames et sa descrption
+// Affiche dans une Fenêtre les list_trame et sa descrption
 public class GUI {
 	// Interface Graphique
 	JFrame frame = new JFrame();
@@ -31,12 +31,11 @@ public class GUI {
 	JTextArea text, trame, analyse;
 	JLabel num_trame;
 	JFileChooser filechooser= new JFileChooser();
-	// Liste des trames avec leurs descriptions
-	List<Trame> trames =  new ArrayList<>();;
-	List<Donnees> donnees =  new ArrayList<>();;
+	// Liste des list_trame avec leurs descriptions
+	List<Trame> list_trame =  new ArrayList<>();;
+	List<Donnees> list_donnees =  new ArrayList<>();;
 	
 	public static void main(String[] args) {
-		Parser.parserbis("data/message.txt");
 		new GUI();
 	}
 	// Constructeur d'interface graphique
@@ -59,7 +58,7 @@ public class GUI {
 				refreshBoutons();
 				trame.setText("");
 				analyse.setText("");
-				if (trames.size()!=0) saveItem.setEnabled(true);
+				if (list_trame.size()!=0) saveItem.setEnabled(true);
 			}
 		});
 		// Bouton de sauvegarde
@@ -106,7 +105,7 @@ public class GUI {
 		// Application des filtres pour fichiers
 		filechooser.setFileFilter(new FileNameExtensionFilter("*.txt","txt"));
 		filechooser.setAcceptAllFileFilterUsed(false);
-		filechooser.setCurrentDirectory(new File("."));
+		filechooser.setCurrentDirectory(new File("./data"));
 		
 		frame.setSize(1000, 1000);
 		frame.setVisible(true);
@@ -121,7 +120,7 @@ public class GUI {
 		File file =filechooser.getSelectedFile();
 		frame.setTitle("Analyseur Protocol: "+ file.getName());
 		String path = file.getAbsolutePath();
-		refreshTrames(path);
+		refreshlist_trame(path);
 	}
 	
 	private void saveFile() {
@@ -129,20 +128,18 @@ public class GUI {
 		int response = filechooser.showSaveDialog(null);
 		if (response != JFileChooser.APPROVE_OPTION) return;
 		File file =filechooser.getSelectedFile();
-		Parser.parseOut(file, trames);
+		Parser.parseOut(file, list_trame);
 	}
 	
-	// Recalcule les trames du nouveau fichier donné par path
-	private void refreshTrames(String path) {
-		trames.clear();
-		donnees.clear();
+	// Recalcule les list_trame du nouveau fichier donné par path
+	private void refreshlist_trame(String path) {
+		list_trame.clear();
+		list_donnees.clear();
 		try {
-			List<String> listString =Parser.parser(path);
-			for (String s: listString) {
-				Donnees d = new Donnees(s);
+			list_donnees =Parser.parser(path);
+			for (Donnees d: list_donnees) {
 				Trame t = new Trame(d);
-				donnees.add(d);
-				trames.add(t);
+				list_trame.add(t);
 			}
 		}
 		catch (Exception e) {
@@ -153,11 +150,11 @@ public class GUI {
 	// Refait les boutons si on a un nouveau fichier
 	private void refreshBoutons() {
 		int taille;
-		if (trames.size()>=10) taille = trames.size();
+		if (list_trame.size()>=10) taille = list_trame.size();
 		else taille = 10;
 		boutons.removeAll();
 		boutons.setLayout(new GridLayout(taille, 0));
-		for (int i=0; i<trames.size(); i++) {
+		for (int i=0; i<list_trame.size(); i++) {
 			JButton button = new JButton(String.format("Trame n° %d", i+1));
 			button.addActionListener(new A(i));
 			boutons.add(button);
@@ -174,8 +171,8 @@ public class GUI {
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			analyse.setText(trames.get(indice).toString());
-			trame.setText(donnees.get(indice).toString());
+			analyse.setText(list_trame.get(indice).toString());
+			trame.setText(list_donnees.get(indice).toString());
 			num_trame.setText(String.format("Trame  n° %d ", indice+1));
 		}
 	}

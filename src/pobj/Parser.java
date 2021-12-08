@@ -49,7 +49,7 @@ public class Parser {
 		for (indice=0; indice < line.length(); indice++)
 			if (line.charAt(indice)==' ') break;
 		String offset_hexa = line.substring(0, indice);
-		return Integer.parseInt(offset_hexa);
+		return Integer.parseInt(offset_hexa, 16);
 	}
 	
 	private static boolean readLine(Donnees trame, String line, int length) {

@@ -53,7 +53,7 @@ public class DHCP implements Couche7 {
 		int i = trame.parseInt(0);
 		if (i == 1) return "Boot Reply (2)";
 		if (i == 0) return "Boot Request (1)";
-		throw new IllegalArgumentException("DHCP: opcode differents de 1 et 2");
+		return ("DHCP: opcode differents de 1 et 2");
 	}
 	
 	// Calcule le champs Hardware type

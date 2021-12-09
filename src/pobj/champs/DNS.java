@@ -19,7 +19,7 @@ public class DNS implements Couche7 {
 	List<String[]> answers = new ArrayList<>();
 	List<String[]> authority = new ArrayList<>();
 	List<String[]> additional = new ArrayList<>();
-	
+	// Met dans un dictoinnaire, tous les noms décodés dans DNS avec leurs position dans l'entête
 	Map<Integer, String> noms_domaine= new HashMap<>();
 	
 	// Constructeur

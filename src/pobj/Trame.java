@@ -17,6 +17,7 @@ public class Trame{
 	UDP udp;
 	Couche7 couche7;
 
+	// Decode la trame
 	public Trame(Donnees trame) {
 		donnees = trame;
 		// On vérifie si la trame est incomplete
@@ -45,7 +46,7 @@ public class Trame{
 		sb.add(couche7.toString());
 		return sb.toString();	
 	}
-	
+	// Decode l'entête IP de la trame
 	private IP calculeIP() {
 		IP ip;
 		donnees = donnees.subDonnees(14);
@@ -58,11 +59,11 @@ public class Trame{
 		donnees = donnees.subDonnees(ip.length());
 		return ip;
 	}
-	
+	// Decode l'entête UDP de la trame
 	private UDP calculeUDP() {
 		return new UDP(donnees);
 	}
-	
+	// Decode la couche7, determine si c'est une entête DNS ou DHCP dans la trame
 	private Couche7 calculeCouche7() {
 		donnees= donnees.subDonnees(8);
 		// On regarde les numéros de port Source et Destination

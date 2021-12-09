@@ -161,17 +161,22 @@ public class DHCP implements Couche7 {
 		// Vender class Identifier
 		case 60:
 			return resp + calcule_name(trame, indice, length, "Vender class identifier: ") ;
-		// Server Nmae
+		// Server Name
 		case 66:
 			return resp + calcule_name(trame, indice, length, "TFTP Sever Name: ");
+		// Bootfile Name
 		case 67:
 			return resp + calcule_name(trame, indice, length, "Bootfile name: ");
 		case 121:
 			resp += trame.parseHexa(indice, indice+length);
 			return resp ;
+		// TFTP Server Adress option
 		case 150:
-			resp += trame.parseHexa(indice, indice+length);
-			return resp ;
+		    sj = new StringJoiner("\n     IPv4 Configuration Serrver Adress:  ", "     IPv4 Configuration Serrver Adress:", "\n");
+		    for (int i=indice; i<indice+length; i+=4) {
+		    	sj.add(String.format("(%d) %s", trame.getIP(i, i+4)));
+		    }
+		    return resp + sj.toString();
 		default:
 			return resp + trame.parseHexa(indice, indice+length);
 		}

@@ -7,7 +7,8 @@ import java.util.StringJoiner;
 
 public class Donnees {
 	List<String> trame = new ArrayList<>();
-	int ligne_incomplète= -1;
+	int num_ligne_incomplete= -1;
+	public String ligne_incomplete;
 	
 	public Donnees(String t) {
 		for (String s : t.split(" "))
@@ -27,7 +28,14 @@ public class Donnees {
 	public Donnees() {
 	}
 	
+	public void setLigne_incomplete(int n, String s){
+		num_ligne_incomplete= n;
+		ligne_incomplete = s;
+	}
 	
+	public boolean isIncomplete(){
+		return num_ligne_incomplete!=-1;
+	}
 	
 	public boolean add(String octet) {
 		Integer.parseInt(octet, 16);

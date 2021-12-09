@@ -155,22 +155,23 @@ public class DHCP implements Couche7 {
 			return resp+ String.format("DHCP Server Identifier: %s", trame.getIP(indice, indice+4));
 		// Parameter Request
 		case 55:
-		    StringJoiner sj = new StringJoiner("\n     Parameter Request List Item:  ", "     Parameter Request List Item:  ", "\n");
+		    StringJoiner sj = new StringJoiner("\n     Parameter Request List Item:  ", "Parameter Request List Item:  ", "\n");
 		    for (int i=0; i<length; i++) {
-		    	int code= trame.parseInt(indice+1);
+		    	int code= trame.parseInt(indice++);
 		    	sj.add(String.format("(%d) %s", code, options[code]));
 		    }
 			return resp + sj.toString();
 		// Vender class Identifier
 		case 60:
 			return resp + calcule_name(trame, indice, length, "Vender class identifier: ") ;
+			// Vender class Identifier
+		case 61:
+			return resp + calcule_name(trame, indice, length, "Client identifier: ") ;
 		// Server Nmae
 		case 66:
-			resp += trame.parseHexa(indice, indice+length);
-			return resp ;
+			return resp + calcule_name(trame, indice, length, "TFTP Sever Name: ");
 		case 67:
-			resp += trame.parseHexa(indice, indice+length);
-			return resp ;
+			return resp + calcule_name(trame, indice, length, "Bootfile name: ");
 		case 121:
 			resp += trame.parseHexa(indice, indice+length);
 			return resp ;

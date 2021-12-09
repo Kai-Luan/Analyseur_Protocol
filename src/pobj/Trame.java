@@ -16,9 +16,11 @@ public class Trame{
 	IP ip;
 	UDP udp;
 	Couche7 couche7;
-	
+
 	public Trame(Donnees trame) {
 		donnees = trame;
+		// On vérifie si la trame est incomplete
+		if (trame.isIncomplete())return;
 		try {
 			// Initialisation des champs
 			eth= new Ethernet(donnees);
@@ -33,6 +35,9 @@ public class Trame{
 	
 	@Override
 	public String toString() {
+		if (donnees.isIncomplete()){
+			return String.format("La trame est incomplete:\n Il manque des octets au fichier à la ligne %d \n ligne: %s", donnees.num_ligne_incomplete, donnees.ligne_incomplete);
+		}		
 		StringJoiner sb = new StringJoiner("\n=================================\n");
 		sb.add(eth.toString());
 		sb.add(ip.toString());

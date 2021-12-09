@@ -13,49 +13,11 @@ import java.util.List;
 public class Parser {
 
 	public Parser() {}
-	
-	public static List<String> parserbis(String fileName){
-		BufferedReader br = null;
-		List<Donnees> list_trame = new ArrayList<>();
-		StringBuilder sb= new StringBuilder();
-		List<String> res =new ArrayList<>();
-		try {
-			br = new BufferedReader(new FileReader(fileName));
-			String line;
-			while((line=br.readLine())!=null) {
-				if (line.length()==0) break;
-				if (get_offset(line)==0) {
-					if (sb.length()!=0) {
-						res.add(sb.toString());
-						sb.setLength(0);
-					}
-				}
-				sb.append(line.substring(7));
-				sb.append(" ");
-			}
-			res.add(sb.toString());
-		} catch (IOException io) {
-			System.out.println("Erreur lors de la lecture du fichier\n");
-			io.printStackTrace();
-			
-		} finally {
-			if(br!=null) {
-				try {
-					br.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-		//System.out.println(res.toString());	
-		return res;
-	}
-	
 	public static List<Donnees> parser(String fileName){
 		BufferedReader br = null;
 		List<Donnees> list_donnees = new ArrayList<>();
 		Donnees donnees = new Donnees();
+		boolean isComplet = true;
 		try {
 			br = new BufferedReader(new FileReader(fileName));
 			String line = br.readLine();
@@ -63,11 +25,12 @@ public class Parser {
 			String[] s_line = line.split(" ");
 			String[] s_next;
 			String next_line;
+			int num_line=1;
 			while((next_line = br.readLine())!=null) {
 				s_next = next_line.split(" ");
 				int offset = -1;
 				int length = -1;
-				// On vérifie si on a un offset
+				// On verifie si on a un offset
 				try {
 					 offset = Integer.parseInt(s_next[0], 16);
 					 length= offset - Integer.parseInt(s_line[0], 16);
@@ -75,17 +38,28 @@ public class Parser {
 				catch(Exception e) {
 					continue;
 				}
-				if (offset != 0) readLine(donnees, s_line, length);
+				if (offset != 0){
+					if (isComplet){
+						isComplet = readLine(donnees, s_line, length);
+						if(!isComplet){
+							donnees.setLigne_incomplete(num_line, line);
+						}
+					}
+				}
 				else {
 					readLine(donnees, s_line, -1);
 					list_donnees.add(donnees);
+					System.out.println("New: " + num_line+"\n line: "+ line);
 					donnees = new Donnees();
+					isComplet = true;
 				}
+				line = next_line;
 				s_line = s_next;
+				num_line++;
 			}
-			readLine(donnees, s_line, -1);
+			if (isComplet)
+				readLine(donnees, s_line, -1);
 			list_donnees.add(donnees);
-			
 		} catch (IOException io) {
 			System.out.println("Erreur lors de la lecture du fichier\n");
 			io.printStackTrace();
@@ -155,14 +129,6 @@ public class Parser {
 		if ( n < length) return false;
 		return true;
 
-	}
-	
-	private static int get_offset(String line) {
-		int indice=0;
-		for (indice=0; indice < line.length(); indice++)
-			if (line.charAt(indice)==' ') break;
-		String offset_hexa = line.substring(0, indice);
-		return Integer.parseInt(offset_hexa, 16);
 	}
 }
 

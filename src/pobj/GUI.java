@@ -2,7 +2,6 @@ package pobj;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
@@ -105,7 +104,7 @@ public class GUI {
 		// Application des filtres pour fichiers
 		filechooser.setFileFilter(new FileNameExtensionFilter("*.txt","txt"));
 		filechooser.setAcceptAllFileFilterUsed(false);
-		filechooser.setCurrentDirectory(new File("./data"));
+		filechooser.setCurrentDirectory(new File("."));
 		
 		frame.setSize(1000, 1000);
 		frame.setVisible(true);

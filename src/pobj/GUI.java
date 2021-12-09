@@ -104,7 +104,6 @@ public class GUI {
 		// Application des filtres pour fichiers
 		filechooser.setFileFilter(new FileNameExtensionFilter("*.txt","txt"));
 		filechooser.setAcceptAllFileFilterUsed(false);
-		filechooser.setCurrentDirectory(new File("."));
 		
 		frame.setSize(1000, 1000);
 		frame.setVisible(true);

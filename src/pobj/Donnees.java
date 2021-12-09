@@ -10,17 +10,6 @@ public class Donnees {
 	int num_ligne_incomplete= -1;
 	public String ligne_incomplete;
 	
-	public Donnees(String t) {
-		for (String s : t.split(" "))
-			try {
-				if (Integer.parseInt(s, 16) <= 255)
-				trame.add(s);
-			}
-			catch (Exception e) {
-				continue;
-		}
-	}
-	
 	public Donnees(List<String> t) {
 		trame.addAll(t);
 	}

@@ -82,7 +82,7 @@ public class DHCP implements Couche7 {
 		client_mac_padding = sb.toString();
 		return sj.toString();
 	}
-		
+	// Decode tout la partie optionS de DNS
 	private String calcule_options(Donnees trame) {
 		int indice =240;
 		int num_option = trame.parseInt(indice);
@@ -177,6 +177,7 @@ public class DHCP implements Couche7 {
 		    	sj.add(String.format("(%d) %s", trame.getIP(i, i+4)));
 		    }
 		    return resp + sj.toString();
+		// Cas par defaut
 		default:
 			return resp + trame.parseHexa(indice, indice+length);
 		}
@@ -242,7 +243,8 @@ public class DHCP implements Couche7 {
 		for (String s: options) sb.add(s);
 		return sb.toString();
 	}
-	
+	// Recupere le nom en code Ascii dans les octets données
+	// indice: debut du nom, length: le nombre d'octets a decoder
 	public String calcule_name(Donnees trame, int indice, int length, String s) {
 	    StringBuilder sb= new StringBuilder(s);
 		for (int i=0; i<length; i++) {

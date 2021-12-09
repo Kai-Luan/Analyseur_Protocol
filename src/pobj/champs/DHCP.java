@@ -85,7 +85,6 @@ public class DHCP implements Couche7 {
 		
 	private String calcule_options(Donnees trame) {
 		int indice =240;
-		trame.affiche(indice);
 		int num_option = trame.parseInt(indice);
 		while (num_option!=255) {
 			int tmp_taille = trame.parseInt(indice+1);
@@ -93,7 +92,6 @@ public class DHCP implements Couche7 {
 			this.options.add(opt);
 			indice+=tmp_taille+2;
 			num_option = trame.parseInt(indice);
-			trame.affiche();
 		}
 		String resp = " Option numero 255 : End\n";
 		this.options.add(resp);

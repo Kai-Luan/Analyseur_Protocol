@@ -31,8 +31,8 @@ public class GUI {
 	JLabel num_trame;
 	JFileChooser filechooser= new JFileChooser();
 	// Liste des list_trame avec leurs descriptions
-	List<Trame> list_trame =  new ArrayList<>();;
-	List<Donnees> list_donnees =  new ArrayList<>();;
+	List<Trame> list_trame =  new ArrayList<>();
+	List<Donnees> list_donnees =  new ArrayList<>();
 	// Main:
 	public static void main(String[] args) {
 		new GUI();

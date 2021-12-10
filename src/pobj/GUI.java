@@ -176,7 +176,7 @@ public class GUI {
 		public void actionPerformed(ActionEvent e) {
 			analyse.setText(list_trame.get(indice).toString());
 			trame.setText(list_donnees.get(indice).toString());
-			num_trame.setText(String.format("Trame  n° %d ", indice+1));
+			num_trame.setText(String.format("Trame  %d ", indice+1));
 		}
 	}
 }

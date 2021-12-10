@@ -97,7 +97,7 @@ public class GUI {
 		mainPanel.add(contientTrame, BorderLayout.EAST);
 		
 		// Ajout Label
-		num_trame = new JLabel("Trame  n°  ", SwingConstants.CENTER);
+		num_trame = new JLabel("Trame  ", SwingConstants.CENTER);
 		mainPanel.add(num_trame, BorderLayout.NORTH);
 		
 		
@@ -158,7 +158,7 @@ public class GUI {
 		boutons.removeAll();
 		boutons.setLayout(new GridLayout(taille, 0));
 		for (int i=0; i<list_trame.size(); i++) {
-			JButton button = new JButton(String.format("Trame n° %d", i+1));
+			JButton button = new JButton(String.format("Trame  %d", i+1));
 			button.addActionListener(new A(i));
 			boutons.add(button);
 		}

@@ -95,7 +95,7 @@ public class IPv4 implements IP {
 		List<String> res = new ArrayList<>();	
 		return res;
 	}
-	
+	// Donne la nombre d'octets dans l'entête IP
 	public int length() {
 		return 4*IHL;
 	}

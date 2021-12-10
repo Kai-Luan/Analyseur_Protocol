@@ -56,7 +56,6 @@ public class Parser {
 				else {
 					readLine(donnees, s_line, -1);
 					list_donnees.add(donnees);
-					System.out.println("New: " + num_line+"\n line: "+ line);
 					donnees = new Donnees();
 					isComplet = true;
 				}
@@ -82,7 +81,6 @@ public class Parser {
 				}
 			}
 		}
-		//System.out.println(res.toString());	
 		return list_donnees;
 	}
 	// Ecriture de fichier: prend une liste d'analyse de trames et l'ecrit dans le fichier donné

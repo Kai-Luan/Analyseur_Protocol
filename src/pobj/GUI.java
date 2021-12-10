@@ -33,7 +33,7 @@ public class GUI {
 	// Liste des list_trame avec leurs descriptions
 	List<Trame> list_trame =  new ArrayList<>();;
 	List<Donnees> list_donnees =  new ArrayList<>();;
-	
+	// Main:
 	public static void main(String[] args) {
 		new GUI();
 	}
@@ -133,15 +133,15 @@ public class GUI {
 	private void refreshlist_trame(String path) {
 		list_trame.clear();
 		list_donnees.clear();
-		try {
-			list_donnees =Parser.parser(path);
-			for (Donnees d: list_donnees) {
+		list_donnees =Parser.parser(path);
+		for (Donnees d: list_donnees) {
+			try {
 				Trame t = new Trame(d);
 				list_trame.add(t);
 			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
+			catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	

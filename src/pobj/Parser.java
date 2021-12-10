@@ -43,8 +43,6 @@ public class Parser {
 					 if (offset!=donnees.size()) throw new Exception();
 				}
 				catch(Exception e) {
-					line = next_line;
-					s_line = s_next;
 					num_line++;
 					continue;
 				}
@@ -71,8 +69,8 @@ public class Parser {
 				num_line++;
 			}
 			// On ajoute la derniere ligne dans la derniere trame
-			if (isComplet)
-				readLine(donnees, s_line, -1);
+			System.out.println("derniere ligne: "+ line);
+			if (isComplet) readLine(donnees, s_line, -1);
 			list_donnees.add(donnees);
 		} catch (IOException io) {
 			System.out.println("Erreur lors de la lecture du fichier\n");

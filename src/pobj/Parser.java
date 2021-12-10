@@ -69,7 +69,6 @@ public class Parser {
 				num_line++;
 			}
 			// On ajoute la derniere ligne dans la derniere trame
-			System.out.println("derniere ligne: "+ line);
 			if (isComplet) readLine(donnees, s_line, -1);
 			list_donnees.add(donnees);
 		} catch (IOException io) {

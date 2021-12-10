@@ -12,7 +12,7 @@ public class IPv4 implements IP {
 	int[] flags;
 	int offset;
 	int ttl;
-	String protocol;
+	public int protocol;
 	String checksum;
 	String src, dest;
 	List<String> listOption;
@@ -31,7 +31,7 @@ public class IPv4 implements IP {
 		offset= calculeOffset(trame);
 		// A partir de l'octet n°8
 		ttl= trame.parseInt(8);
-		protocol= calculeProtocol(trame);
+		protocol= trame.parseInt(9);
 		checksum= trame.parseHexa(10,12);
 		// A partir de l'octet n°12
 		src= trame.getIP(12, 16);
@@ -55,7 +55,9 @@ public class IPv4 implements IP {
 		sb.add("  Don't fragment: " + flags[1]);
 		sb.add("  More fragments: " + flags[2]);
 		sb.add("Fragment offset: "+ offset);
-		sb.add("Protocol: "+ protocol);
+		if (protocol==17)
+			sb.add("Protocol: UDP (17)");
+		else sb.add("Protocol: "+protocol);
 		sb.add("Header Checksum: "+ checksum);
 		sb.add("Source Address: "+ src);
 		sb.add("Destination Address: "+ dest);
@@ -68,7 +70,6 @@ public class IPv4 implements IP {
 		int i = trame.parseInt(6);
 		int[] res= new int[3];
 		res[0]= 0;
-		if (i>=128) throw new IllegalArgumentException("Fichier invalide");
 		if (i>=64) res[1]=1;
 		else res[1]=0;
 		if (i-64*res[1] >=32) res[2] = 1;
@@ -81,13 +82,6 @@ public class IPv4 implements IP {
 		int val = trame.parseInt(6);
 		val-= 64*flags[1] + 32*flags[2];
 		return val+trame.parseInt(7);
-	}
-	
-	// Calcule le protocol
-	private String calculeProtocol(Donnees trame) {		
-		int i = trame.parseInt(9);
-		if (i!=17) throw new IllegalArgumentException("IP: mauvais protocol");
-		return "UDP (17)";
 	}
 	
 	// Calcule la liste des options dans l'entete IP

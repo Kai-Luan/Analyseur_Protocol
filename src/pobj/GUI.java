@@ -98,8 +98,7 @@ public class GUI {
 		
 		// Ajout Label
 		num_trame = new JLabel("Trame  ", SwingConstants.CENTER);
-		mainPanel.add(num_trame, BorderLayout.NORTH);
-		
+		mainPanel.add(num_trame, BorderLayout.NORTH);		
 		
 		// Application des filtres pour fichiers
 		filechooser.setFileFilter(new FileNameExtensionFilter("*.txt","txt"));

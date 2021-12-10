@@ -27,7 +27,8 @@ public class Trame{
 			eth= new Ethernet(donnees);
 			ip = calculeIP();
 			udp = calculeUDP();
-			couche7 = calculeCouche7();
+			if (udp!=null)
+				couche7 = calculeCouche7();
 		}
 		catch( Exception e) {
 			e.printStackTrace();
@@ -42,8 +43,12 @@ public class Trame{
 		StringJoiner sb = new StringJoiner("\n=================================\n");
 		sb.add(eth.toString());
 		sb.add(ip.toString());
-		sb.add(udp.toString());
-		sb.add(couche7.toString());
+		if (udp!=null)
+			sb.add(udp.toString());
+		else sb.add("Protocole autre que udp");
+		if (couche7!=null)
+			sb.add(couche7.toString());
+		else sb.add("Protocole autre que DHCP et DNS");
 		return sb.toString();	
 	}
 	// Decode l'entête IP de la trame
@@ -61,7 +66,9 @@ public class Trame{
 	}
 	// Decode l'entête UDP de la trame
 	private UDP calculeUDP() {
-		return new UDP(donnees);
+		if (ip instanceof IPv4 && ((IPv4) ip).protocol==17)
+			return new UDP(donnees);
+		else return null;
 	}
 	// Decode la couche7, determine si c'est une entête DNS ou DHCP dans la trame
 	private Couche7 calculeCouche7() {
@@ -73,7 +80,7 @@ public class Trame{
 		else {
 			if (udp.portSrc==67 || udp.portDest ==67)
 				return new DHCP(donnees);
-			else throw new IllegalArgumentException("Couche7: ni DNS ni DHCP");
+			else return null;
 		}
 	}
 }

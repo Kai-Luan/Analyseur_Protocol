@@ -73,7 +73,7 @@ public class Trame{
 		else {
 			if (udp.portSrc==67 || udp.portDest ==67)
 				return new DHCP(donnees);
-			else throw new IllegalArgumentException();
+			else throw new IllegalArgumentException("Couche7: ni DNS ni DHCP");
 		}
 	}
 }

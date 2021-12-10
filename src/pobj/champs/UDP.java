@@ -17,7 +17,7 @@ public class UDP {
 	
 	@Override
 	public String toString() {
-		StringJoiner sb = new StringJoiner("\n  ", "Protocol UDP\n  ","\n");
+		StringJoiner sb = new StringJoiner("\n  ", " 	User Datagram Protocol\n  ","\n");
 		sb.add("Source port: "+ portSrc);
 		sb.add("Destination port: "+ portDest);
 		sb.add("Length: "+ length);

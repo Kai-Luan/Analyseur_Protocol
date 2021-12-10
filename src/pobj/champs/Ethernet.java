@@ -16,7 +16,7 @@ public class Ethernet {
 	// Retourne en String, l'entête Ethernet
 	@Override
 	public String toString() {
-		StringJoiner sb = new StringJoiner("\n  ", "Protocol Ethernet\n  ","\n");
+		StringJoiner sb = new StringJoiner("\n  ", " 	Ethernet\n  ","\n");
 		sb.add("Addresse Mac Destination: "+ dest);
 		sb.add("Addresse Mac Source: "+ src);
 		sb.add("Type: "+ type);

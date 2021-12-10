@@ -44,7 +44,7 @@ public class IPv4 implements IP {
 	// Retourne en String, l'entete IP
 	@Override
 	public String toString() {
-		StringJoiner sb = new StringJoiner("\n  ", "Protocol IP\n  ","\n");
+		StringJoiner sb = new StringJoiner("\n  ", " 	Internet Protocol\n  ","\n");
 		sb.add("Version: "+ version);
 		sb.add("Header length: "+ IHL);
 		sb.add("Type of service: "+ tos);

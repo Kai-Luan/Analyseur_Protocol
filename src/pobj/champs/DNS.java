@@ -261,7 +261,7 @@ public class DNS implements Couche7 {
 	
 	@Override
 	public String toString() {
-		StringJoiner sj = new StringJoiner("\n  ","DNS Protocol\n  ", "");
+		StringJoiner sj = new StringJoiner("\n  ","		Domain Name System\n  ", "");
 		sj.add("Transaction ID: "+ id);
 		sj.add(toString_flags());
 		sj.add("Questions: " + question_count);

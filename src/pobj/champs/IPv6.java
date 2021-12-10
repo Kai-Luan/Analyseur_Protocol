@@ -36,7 +36,7 @@ public class IPv6 implements IP{
 	// Retourne en String, l'entete IP
 	@Override
 	public String toString() {
-		StringJoiner sb = new StringJoiner("\n  ", "Protocol IP\n  ","\n");
+		StringJoiner sb = new StringJoiner("\n  ", " 	Internet Protocol\n  ","\n");
 		sb.add("Version: 6");
 		sb.add(traffic_class);
 		sb.add("Payload Length: "+ payload_length);

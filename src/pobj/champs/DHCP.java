@@ -404,7 +404,7 @@ public class DHCP implements Couche7 {
 	
 	@Override
 	public String toString() {
-		StringJoiner sb = new StringJoiner("\n  ", "Protocol DHCP\n  ","\n");
+		StringJoiner sb = new StringJoiner("\n  ", " 	Dynamic Host Configuration Protocol\n  ","\n");
 		sb.add("Message type: " + opcode);
 		sb.add("Hardware type: " + HType);
 		sb.add("Hardware adress length: " + HLen);

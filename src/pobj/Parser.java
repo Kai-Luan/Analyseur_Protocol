@@ -31,18 +31,25 @@ public class Parser {
 			while((next_line = br.readLine())!=null) {
 				// On separe les octets de la ligne par leur espace
 				s_next = next_line.split(" ");
-				int offset = -1;
+				int offset= -1;
+				int next_offset = -1;
 				int length = -1;
 				// On verifie si on a un offset au debut de la ligne, sinon on ignore la ligne
 				try {
-					 offset = Integer.parseInt(s_next[0], 16);
-					 length= offset - Integer.parseInt(s_line[0], 16);
+					 next_offset = Integer.parseInt(s_next[0], 16);
+					 offset = Integer.parseInt(s_line[0], 16);
+					 length= next_offset - offset;
+					 // Si l'offset n'est pas valide, on ignore la ligne
+					 if (offset!=donnees.size()) throw new Exception();
 				}
 				catch(Exception e) {
+					line = next_line;
+					s_line = s_next;
+					num_line++;
 					continue;
 				}
 				// Si le prochain offset est different de 0, on prend le nombre d'octets indiqué les offsets
-				if (offset != 0){
+				if (next_offset != 0){
 					// On ajoute les octets si la trame n'a pas eu d'erreur: comme une ligne incomplete
 					if (isComplet){
 						// On ajoute dans la trame, et on verifie si la ligne est complete

@@ -28,8 +28,14 @@ public class Donnees {
 	}
 	// Ajoute un octet dans la trame
 	public boolean add(String octet) {
-		Integer.parseInt(octet, 16);
-		return trame.add(octet);
+		try {
+			Integer.parseInt(octet, 16);
+			return trame.add(octet);
+		}
+		catch(Exception e) {
+			return false;
+		}
+
 	}
 	// Recupere un octet de la trame à i
 	public String get(int i) {
